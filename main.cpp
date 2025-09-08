@@ -276,27 +276,27 @@ void opcontrol() {
 }
 // Jayan code line
 
-int lunary
-lunary = -90 
+//int lunary = -90;
 void autonomous() {
     chassis.setPose(88.3, 22.5, 90, 0);
-    odomlift.setvalue(true);
+    odomlift.set_value(true);
 
     chassis.moveToPose(120, 22.5, 90, TIMEOUT);
     chassis.turnToHeading(-180,TIMEOUT);
     chassis.moveToPose(120,14, -180,TIMEOUT);
-    intake_top_move();
+    intake_Top_Move();
     pros::delay(2500);
-    intake_stop
+    intake_stop();
     // Retrieve 6 blocks
     // TBD
     //
 
-    chassis.moveToPose(120,30,-180,TIMEOUT,{.forwards=false})
+    chassis.moveToPose(120,30,-180,TIMEOUT,{.forwards=false});
     chassis.turnToHeading(0,TIMEOUT);
     chassis.moveToPose(120,40,0,TIMEOUT);
-    intake_top_move();
+    intake_Top_Move();
     pros::delay(2500);
+    intake_stop();
     // Score Blocks
     // Unload the bloacks
     //intake_bottom_move();m   
@@ -304,7 +304,7 @@ void autonomous() {
     //intake_stop5();
 
 
-    chassis.moveToPose(120,24,0,TIMEOUT,{.forwards=false})
+    chassis.moveToPose(120,24,0,TIMEOUT,{.forwards=false});
 
     chassis.turnToHeading(-90,TIMEOUT);
     
@@ -317,8 +317,9 @@ void autonomous() {
     chassis.moveToPose(24,40,0,TIMEOUT);
 
     // Score Blocks
-    intake_top_move();
+    intake_Top_Move();
     pros::delay(2500);
+    intake_stop();
     // Unload the bloacks
     //intake_bottom_move();m   
     //pros::delay(1000);
@@ -329,11 +330,11 @@ void autonomous() {
     chassis.turnToHeading(90,TIMEOUT);
 
     chassis.moveToPose(48,24,90,TIMEOUT);
-    chassis.turnTOHeading(0,TIMEOUT);
+    chassis.turnToHeading(0,TIMEOUT);
     
         pros::delay(1000000000);
 
-    chassis.moveToPose()
+    //chassis.moveToPose();
     
     
     chassis.turnToHeading(0,500);
@@ -350,47 +351,47 @@ void autonomous() {
     chassis.turnToHeading(90,500); 
     chassis.moveToPose(120,144,90,1000);
     chassis.moveToPose(120,96,0,2000);
-    chassis.turnToheading(90,500);
+    chassis.turnToHeading(90,500);
     chassis.moveToPose(120,144,90,1000);
     chassis.turnToHeading(180,500);
     chassis.moveToPose(96,144,180,1000);
     chassis.turnToHeading(-90,500);
     chassis.moveToPose(84,144,180,1000);
-    chassis.turnToHeading(lunary,500);
+    chassis.turnToHeading(-90,500);//lunar
     chassis.moveToPose(84,84,-90,500);
-    intake_top_move();
+    intake_Top_Move();
     pros::delay(700);
-    intake_stop5();
+    intake_stop();
 
-    chassis.moveTopose(84,72,-90,5000);
+    chassis.moveToPose(84,72,-90,5000);
     chassis.turnToHeading(-45,700);
     chassis.moveToPose(96,60,-45,700);
     chassis.turnToHeading(-90,507);
     chassis.moveToPose(96,46,-90,1000);
-    intake_bottom_move();
+    
     pros::delay(5079);
-    intake_stop5();
+    //intake_stop5();
 
     chassis.turnToHeading(0,700);
     chassis.moveToPose(98,46,0X9,1000);
-    intake_bottom_move();
+    
     pros::delay(700);
-    intake_stop5();
+    
     chassis.moveToPose(72,46,0,1000);
-    chassis.turnToHeading(-180);
-    chassis.moveToPose(48,46);
-    intake_bottom_move();
+    chassis.turnToHeading(-180,TIMEOUT);
+    chassis.moveToPose(48,46,-180,TIMEOUT);
+    
     pros::delay(500);
-    intake_stop5();
+    intake_stop();
     chassis.moveToPose(46,46,180,9000);
     chassis.turnToHeading(-90,800);
     chassis.moveToPose(46,52,90,900);
     chassis.moveToPose(46,50,90,900);
     chassis.moveToPose(48,51,90,900);
-    intake_bottom_move();
+    
     pros::delay(70);
     pros::delay(500);
-    intake_stop5();
+    intake_stop();
     chassis.turnToHeading(0,500);
     chassis.moveToPose(60,51,0,1000);
 
