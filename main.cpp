@@ -1,43 +1,39 @@
 #include "main.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
 
-//drivetrain motor group
-pros::MotorGroup right_motors({3, -4, 1}, pros::MotorGearset::blue);
-pros::MotorGroup left_motors({-5, 11, -6}, pros::MotorGearset::blue);
+// Macros
+#define TIMEOUT 4000
 
-// pros::MotorGroup intake({13, -3},
-//                             pros::MotorGearset::blue);
+//drivetrain motor group
+pros::MotorGroup right_motors({3, -16, 1}, pros::MotorGearset::blue);
+pros::MotorGroup left_motors({-17, 11, -6}, pros::MotorGearset::blue);
 // intertial
-pros::Imu imu(15);
+pros::Imu imu(14);
 
 //odometry
 //vertical tracking wheel encoder
 pros::Rotation vertical_encoder(-5); 
 // vertical tracking wheel., front of the bot touched with offset of 4
-lemlib::TrackingWheel vertical_tracking_wheel(&vertical_encoder, lemlib::Omniwheel::NEW_2, 1.375); //0.75, 2 came forward but clamp right of y,
+lemlib::TrackingWheel vertical_tracking_wheel(&vertical_encoder, lemlib::Omniwheel::NEW_2, 0.5); //0.75, 2 came forward but clamp right of y,
 //horizontal tracking wheel encoder
 pros::Rotation horizontal_encoder(7); 
 // horizontal tracking wheel
 lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_encoder, lemlib::Omniwheel::NEW_2, -5.5);
 
 //intake motors
-pros::Motor intake1(20, pros::MotorGearset::green);
-pros::Motor intake2(9, pros::MotorGearset::green);
-pros::Motor intake3(19, pros::MotorGearset::green);
-pros::Motor intake4(13, pros::MotorGearset::green);
+pros::Motor intakebottom(10, pros::MotorGearset::blue);
+pros::Motor intakemiddle(13, pros::MotorGearset::green);
+pros::Motor intaketop(8, pros::MotorGearset::green);
 
 //pnuematics
-pros::adi::DigitalOut flap1('A', false);
-pros::adi::DigitalOut flap2('B', false);
-pros::adi::DigitalOut scraper1('C',false);
-pros::adi::DigitalOut scraper2('D',false);
-pros::adi::DigitalOut ramp1('E', true);
-pros::adi::DigitalOut ramp2('F', true);
+pros::adi::DigitalOut scraper1('A', false);
+pros::adi::DigitalOut scraper2('B', false);
+pros::adi::DigitalOut odomlift('D', true);
 
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&left_motors, // left motor group
                               &right_motors, // right motor group
-                              12, // 10 inch track width
+                              11.5, // 10 inch track width
                               lemlib::Omniwheel::NEW_325, // using new 4" omnis
                               450, // drivetrain rpm is 360
                               2 // horizontal drift is 2. If we had traction wheels, it would have been 8
@@ -52,9 +48,9 @@ lemlib::OdomSensors sensors(&vertical_tracking_wheel, // vertical tracking wheel
 );
 
 // lateral motion controller
-lemlib::ControllerSettings linearController(10, // proportional gain (kP)
+lemlib::ControllerSettings linearController(8, // proportional gain (kP)
                                             0, // integral gain (kI)
-                                            9.5, // derivative gain (kD)
+                                            3, // derivative gain (kD)
                                             3, // anti windup
                                             1, // small error range, in inches
                                             100, // small error range timeout, in milliseconds
@@ -64,9 +60,9 @@ lemlib::ControllerSettings linearController(10, // proportional gain (kP)
 );
 
 // angular motion controller
-lemlib::ControllerSettings angularController(3.45, // proportional gain (kP)
+lemlib::ControllerSettings angularController(3.5, //roportional gain (kP)
                                              0, // integral gain (kI)
-                                             15, // derivative gain (kD)
+                                            29, // derivative gain (kD)
                                              3, // 3 anti windup old = 3
                                              1, // 1 small error range, in degrees old = 1
                                              100, // 100 small error range timeout, in milliseconds old = 100
@@ -164,12 +160,12 @@ void competition_initialize() {}
  * from where it left off.
  */
 
-  void intake_Top_Move(){
+ void intake_Top_Move(){
  	//intake
-	intake3.move_velocity(-200);
-    intake1.move_velocity(-200);
-    intake2.move_velocity(200);
-    intake4.move_velocity(-200);
+	intakebottom.move_velocity(-600);
+    intakemiddle.move_velocity(-200);
+    intaketop.move_velocity(-200);
+   
  	// seconds = seconds*1000;
  	// pros::delay(seconds); // 1000 miliseconds is 1 second
     // intake3.move_velocity(0);
@@ -178,56 +174,20 @@ void competition_initialize() {}
     // intake4.move_velocity(0);
  }
 
-   void intake_stop(){
- 	
-    intake3.move_velocity(0);
-    intake1.move_velocity(0);
-    intake2.move_velocity(0);
-    intake4.move_velocity(0);
+ void intake_Top_Move_Slow(){
+ 	//intake
+	intakebottom.move_velocity(-300);
+    intakemiddle.move_velocity(-100);
+    intaketop.move_velocity(-100);
  }
 
-void autonomous() {
-    chassis.setPose(0, 0, 0, 0);
-    chassis.turnToHeading(-90, 1000);
-    chassis.moveToPose(21.5, 0, -90, 5000);
-    chassis.turnToHeading(180, 500);
-    chassis.moveToPose(21.5,-4, 180, 500);
-    chassis.turnToHeading(0, 500);
-    chassis.moveToPose(21.5,4,0,500);
-    //intake_Top_Move();
-    //pros::delay(1000);
-    chassis.turnToHeading(180, 500);
-    chassis.moveToPose(21.5, 0, 180, 500);
-   
-    chassis.moveToPose(2, 0, 180, 500);
-    chassis.turnToHeading(90, 500);
-    chassis.moveToPose(2, 24, 90, 1000);
-    chassis.moveToPose(2, 20,90, 200);
-    chassis.turnToHeading(90,300);
-    chassis.turnToHeading(135,50);
-    chassis.moveToPose(1, 30, 135, 2000);
-    chassis.turnToHeading(180, 200);
-    chassis.moveToPose(-60, 0, float theta, int timeout)
+   void intake_stop(){
+ 	//intake
+    intakebottom.move_velocity(0);
+    intakemiddle.move_velocity(0);
+    intaketop.move_velocity(0);
+ }
 
-
-    
-   
-
-
-
-
-
-
-
-    
-    
-
-
-
-
-
-
-}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -246,6 +206,7 @@ void opcontrol() {
 	pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 	while (true) {
+        odomlift.set_value(true);
         //pros::task_t(NULL);
         // get left y and right y positions
         int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
@@ -258,36 +219,31 @@ void opcontrol() {
 
 		//top goal
 		if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
-			intake3.move_velocity(-200);
-            intake1.move_velocity(-200);
-            intake2.move_velocity(200);
-            intake4.move_velocity(-200);
+			intakebottom.move_velocity(-600);
+            intakemiddle.move_velocity(200);
+            intaketop.move_velocity(200);
 		}
 		else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
-            intake3.move_velocity(200);
-            intake1.move_velocity(200);
-            intake2.move_velocity(-200);
-            intake4.move_velocity(200);
+           intakebottom.move_velocity(600);
+           intakemiddle.move_velocity(-200);
+           intaketop.move_velocity(-200);
         }
 
 		//middle goal
 		else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
-			intake3.move_velocity(-200);
-            intake1.move_velocity(200);
-            intake2.move_velocity(-200);
-            intake4.move_velocity(-200);
+			intakebottom.move_velocity(-600);
+            intakemiddle.move_velocity(200);
+            intaketop.move_velocity(-200);
 		}
         else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
-            intake3.move_velocity(200);
-            intake1.move_velocity(-200);
-            intake2.move_velocity(200);
-            intake4.move_velocity(200);
+            intakebottom.move_velocity(600);
+            intakemiddle.move_velocity(-200);
+            intaketop.move_velocity(-200);
         }
 		else{
-			intake3.move_velocity(0);
-            intake1.move_velocity(0);
-            intake2.move_velocity(0);
-            intake4.move_velocity(0);
+			intakebottom.move_velocity(0);
+            intakemiddle.move_velocity(0);
+            intaketop.move_velocity(0);
 		}
 
 	
@@ -305,16 +261,228 @@ void opcontrol() {
 
 		//flap
 		if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_X)){
-			flap1.set_value(true);
-			flap2.set_value(true);
+			scraper1.set_value(true);
+			scraper2.set_value(true);
         }
         if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)){
-			flap1.set_value(false);
-			flap2.set_value(false);
+			scraper1.set_value(false);
+			scraper2.set_value(false);
         }	
 		
 		//delay
 		pros::delay(25); 
 	}//end of while	
+
+}
+// Jayan code line
+
+int lunary
+lunary = -90 
+void autonomous() {
+    chassis.setPose(88.3, 22.5, 90, 0);
+    odomlift.setvalue(true);
+
+    chassis.moveToPose(120, 22.5, 90, TIMEOUT);
+    chassis.turnToHeading(-180,TIMEOUT);
+    chassis.moveToPose(120,14, -180,TIMEOUT);
+    intake_top_move();
+    pros::delay(2500);
+    intake_stop
+    // Retrieve 6 blocks
+    // TBD
+    //
+
+    chassis.moveToPose(120,30,-180,TIMEOUT,{.forwards=false})
+    chassis.turnToHeading(0,TIMEOUT);
+    chassis.moveToPose(120,40,0,TIMEOUT);
+    intake_top_move();
+    pros::delay(2500);
+    // Score Blocks
+    // Unload the bloacks
+    //intake_bottom_move();m   
+    //pros::delay(1000);
+    //intake_stop5();
+
+
+    chassis.moveToPose(120,24,0,TIMEOUT,{.forwards=false})
+
+    chassis.turnToHeading(-90,TIMEOUT);
+    
+    // Going to Other Match Loader
+    chassis.moveToPose(24,24,-90,TIMEOUT);
+    chassis.turnToHeading(180,TIMEOUT); 
+    chassis.moveToPose(24,14,180,TIMEOUT);      
+    chassis.moveToPose(24,24,180,TIMEOUT,{.forwards=false});
+    chassis.turnToHeading(0,TIMEOUT);
+    chassis.moveToPose(24,40,0,TIMEOUT);
+
+    // Score Blocks
+    intake_top_move();
+    pros::delay(2500);
+    // Unload the bloacks
+    //intake_bottom_move();m   
+    //pros::delay(1000);
+    //intake_stop5();    
+    
+    
+    chassis.moveToPose(24,24,0,TIMEOUT,{.forwards=false});
+    chassis.turnToHeading(90,TIMEOUT);
+
+    chassis.moveToPose(48,24,90,TIMEOUT);
+    chassis.turnTOHeading(0,TIMEOUT);
+    
+        pros::delay(1000000000);
+
+    chassis.moveToPose()
+    
+    
+    chassis.turnToHeading(0,500);
+    chassis.moveToPose(96,88,-135,1000);
+    chassis.turnToHeading(45,500);
+    chassis.moveToPose(108,100,45,1000);
+    chassis.turnToHeading(0,500);
+    chassis.moveToPose(110,100,0,1000);
+    chassis.turnToHeading(90,500);
+    chassis.moveToPose(110,100,90,500);
+    chassis.turnToHeading(0,500);
+    chassis.moveToPose(120,96,0,2000);
+    chassis.turnToHeading(-90,500);
+    chassis.turnToHeading(90,500); 
+    chassis.moveToPose(120,144,90,1000);
+    chassis.moveToPose(120,96,0,2000);
+    chassis.turnToheading(90,500);
+    chassis.moveToPose(120,144,90,1000);
+    chassis.turnToHeading(180,500);
+    chassis.moveToPose(96,144,180,1000);
+    chassis.turnToHeading(-90,500);
+    chassis.moveToPose(84,144,180,1000);
+    chassis.turnToHeading(lunary,500);
+    chassis.moveToPose(84,84,-90,500);
+    intake_top_move();
+    pros::delay(700);
+    intake_stop5();
+
+    chassis.moveTopose(84,72,-90,5000);
+    chassis.turnToHeading(-45,700);
+    chassis.moveToPose(96,60,-45,700);
+    chassis.turnToHeading(-90,507);
+    chassis.moveToPose(96,46,-90,1000);
+    intake_bottom_move();
+    pros::delay(5079);
+    intake_stop5();
+
+    chassis.turnToHeading(0,700);
+    chassis.moveToPose(98,46,0X9,1000);
+    intake_bottom_move();
+    pros::delay(700);
+    intake_stop5();
+    chassis.moveToPose(72,46,0,1000);
+    chassis.turnToHeading(-180);
+    chassis.moveToPose(48,46);
+    intake_bottom_move();
+    pros::delay(500);
+    intake_stop5();
+    chassis.moveToPose(46,46,180,9000);
+    chassis.turnToHeading(-90,800);
+    chassis.moveToPose(46,52,90,900);
+    chassis.moveToPose(46,50,90,900);
+    chassis.moveToPose(48,51,90,900);
+    intake_bottom_move();
+    pros::delay(70);
+    pros::delay(500);
+    intake_stop5();
+    chassis.turnToHeading(0,500);
+    chassis.moveToPose(60,51,0,1000);
+
+
+
+
+
+
+
+
+
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+    
+    chassis.moveToPose(2, 24, 90, 1000);
+    chassis.moveToPose(2, 20,90, 200);
+    chassis.turnToHeading(135,50);
+    chassis.moveToPose(1, 30, 90, 2000);
+    chassis.turnToHeading(225, 200);
+    chassis.moveToPose(-60, 0, 135, 5000);
+    chassis.turnToHeading(90,500);
+    
+
+
+
+    
+   
+
+
+
+
+
+
+
+    
+    
+
+
+
+
+
 
 }
