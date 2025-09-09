@@ -280,7 +280,7 @@ void opcontrol() {
 void autonomous() {
     chassis.setPose(88.3, 22.5, 90, 0);
     odomlift.set_value(true);
-
+    scraper1.set_value(false);
     chassis.moveToPose(120, 22.5, 90, TIMEOUT);
     chassis.turnToHeading(-180,TIMEOUT);
     chassis.moveToPose(120,14, -180,TIMEOUT);
@@ -304,12 +304,12 @@ void autonomous() {
     //intake_stop5();
 
 
-    chassis.moveToPose(120,24,0,TIMEOUT,{.forwards=false});
+    chassis.moveToPose(120,30,0,TIMEOUT,{.forwards=false});
 
     chassis.turnToHeading(-90,TIMEOUT);
-    
+    //scraper 1
     // Going to Other Match Loader
-    chassis.moveToPose(24,24,-90,TIMEOUT);
+    chassis.moveToPose(24,30,-90,TIMEOUT);
     chassis.turnToHeading(180,TIMEOUT); 
     chassis.moveToPose(24,14,180,TIMEOUT);      
     chassis.moveToPose(24,24,180,TIMEOUT,{.forwards=false});
@@ -331,6 +331,25 @@ void autonomous() {
 
     chassis.moveToPose(48,24,90,TIMEOUT);
     chassis.turnToHeading(0,TIMEOUT);
+    chassis.moveToPose(48, 24, 0, 2000);
+    chassis.turnToHeading(90, 2000);
+    chassis.moveToPose(108, 24, 45,  4000);
+    chassis.turnToHeading(0, 3000);
+    chassis.moveToPose(108,120,0,3000);
+    chassis.turnToHeading(90, 3000);
+    chassis.moveToPose(120, 120, 90, 3500);
+    chassis.turnToHeading(0, 20000);
+    chassis.moveToPose(120, 124, 0,  3000);
+    intake_Top_Move();
+    pros::delay(2700);
+    intake_stop();
+    chassis.moveToPose(120, 120, 0, 4000,{.forwards=false});
+    chassis.turnToHeading(180,20000);
+    chassis.moveToPose(120, 104, 180, 3000);
+    
+
+
+    
     
         pros::delay(1000000000);
 
