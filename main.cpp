@@ -284,9 +284,11 @@ void autonomous() {
     chassis.moveToPose(120, 22.5, 90, TIMEOUT);
     chassis.turnToHeading(-180,TIMEOUT);
     chassis.moveToPose(120,14, -180,TIMEOUT);
+    scraper1.set_value(true);
     intake_Top_Move();
     pros::delay(2500);
     intake_stop();
+    scraper1.set_value(false);
     // Retrieve 6 blocks
     // TBD
     //
@@ -294,9 +296,13 @@ void autonomous() {
     chassis.moveToPose(120,30,-180,TIMEOUT,{.forwards=false});
     chassis.turnToHeading(0,TIMEOUT);
     chassis.moveToPose(120,40,0,TIMEOUT);
+    scraper1.set_value(true);
     intake_Top_Move();
     pros::delay(2500);
     intake_stop();
+    scraper1.set_value(false);
+    scraper1.set_value(false);
+
     // Score Blocks
     // Unload the bloacks
     //intake_bottom_move();m   
@@ -315,11 +321,14 @@ void autonomous() {
     chassis.moveToPose(24,24,180,TIMEOUT,{.forwards=false});
     chassis.turnToHeading(0,TIMEOUT);
     chassis.moveToPose(24,40,0,TIMEOUT);
-
+    scraper1.set_value(true);
     // Score Blocks
+
     intake_Top_Move();
     pros::delay(2500);
     intake_stop();
+    scraper1.set_value(false);
+    scraper1.set_value(false);
     // Unload the bloacks
     //intake_bottom_move();m   
     //pros::delay(1000);
@@ -340,169 +349,58 @@ void autonomous() {
     chassis.moveToPose(120, 120, 90, 3500);
     chassis.turnToHeading(0, 20000);
     chassis.moveToPose(120, 124, 0,  3000);
+    scraper1.set_value(true);
     intake_Top_Move();
     pros::delay(2700);
     intake_stop();
+    scraper1.set_value(false);
+    scraper1.set_value(false);
     chassis.moveToPose(120, 120, 0, 4000,{.forwards=false});
     chassis.turnToHeading(180,20000);
     chassis.moveToPose(120, 104, 180, 3000);
+    chassis.moveToPose(120,114,180,2999,{.forwards=false});
+    chassis.turnToHeading(0, 1000);
+    chassis.turnToHeading(-90,1000);
+    chassis.moveToPose(24,114,-90,5000);
+    chassis.turnToHeading(0,500);
+    chassis.moveToPose(24, 126, 0, 5000);
+    scraper1.set_value(true);
+    intake_Top_Move();
+    pros::delay(2500);
+    intake_stop();
+    scraper1.set_value(false);
     
+    chassis.moveToPose(24,120,0,2000,{.forwards=false});
+    chassis.turnToHeading(180,2000);
+    chassis.moveToPose(24,104,180,3000);
+    scraper1.set_value(true);
+    scraper1.set_value(true);
+    scraper1.set_value(true);
+    scraper1.set_value(true);
+    intake_Top_Move();
+    pros::delay(2500);
+    intake_stop();
+    scraper1.set_value(false);
+    scraper1.set_value(false);
+    scraper1.set_value(false);
+    scraper1.set_value(false);
+
+    chassis.moveToPose(24,120,180,2000,{.forwards=false});
+    chassis.turnToHeading(90,3000);
+    chassis.moveToPose(72,120,90,2500);
+    ///chassis.;
+    chassis.turnToHeading(0,1000);
+    chassis.moveToPose(72,134,0,10000);
+
+
+
 
 
     
     
         pros::delay(1000000000);
-
+}
     //chassis.moveToPose();
     
     
-    chassis.turnToHeading(0,500);
-    chassis.moveToPose(96,88,-135,1000);
-    chassis.turnToHeading(45,500);
-    chassis.moveToPose(108,100,45,1000);
-    chassis.turnToHeading(0,500);
-    chassis.moveToPose(110,100,0,1000);
-    chassis.turnToHeading(90,500);
-    chassis.moveToPose(110,100,90,500);
-    chassis.turnToHeading(0,500);
-    chassis.moveToPose(120,96,0,2000);
-    chassis.turnToHeading(-90,500);
-    chassis.turnToHeading(90,500); 
-    chassis.moveToPose(120,144,90,1000);
-    chassis.moveToPose(120,96,0,2000);
-    chassis.turnToHeading(90,500);
-    chassis.moveToPose(120,144,90,1000);
-    chassis.turnToHeading(180,500);
-    chassis.moveToPose(96,144,180,1000);
-    chassis.turnToHeading(-90,500);
-    chassis.moveToPose(84,144,180,1000);
-    chassis.turnToHeading(-90,500);//lunar
-    chassis.moveToPose(84,84,-90,500);
-    intake_Top_Move();
-    pros::delay(700);
-    intake_stop();
-
-    chassis.moveToPose(84,72,-90,5000);
-    chassis.turnToHeading(-45,700);
-    chassis.moveToPose(96,60,-45,700);
-    chassis.turnToHeading(-90,507);
-    chassis.moveToPose(96,46,-90,1000);
     
-    pros::delay(5079);
-    //intake_stop5();
-
-    chassis.turnToHeading(0,700);
-    chassis.moveToPose(98,46,0X9,1000);
-    
-    pros::delay(700);
-    
-    chassis.moveToPose(72,46,0,1000);
-    chassis.turnToHeading(-180,TIMEOUT);
-    chassis.moveToPose(48,46,-180,TIMEOUT);
-    
-    pros::delay(500);
-    intake_stop();
-    chassis.moveToPose(46,46,180,9000);
-    chassis.turnToHeading(-90,800);
-    chassis.moveToPose(46,52,90,900);
-    chassis.moveToPose(46,50,90,900);
-    chassis.moveToPose(48,51,90,900);
-    
-    pros::delay(70);
-    pros::delay(500);
-    intake_stop();
-    chassis.turnToHeading(0,500);
-    chassis.moveToPose(60,51,0,1000);
-
-
-
-
-
-
-
-
-
-
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-    
-    chassis.moveToPose(2, 24, 90, 1000);
-    chassis.moveToPose(2, 20,90, 200);
-    chassis.turnToHeading(135,50);
-    chassis.moveToPose(1, 30, 90, 2000);
-    chassis.turnToHeading(225, 200);
-    chassis.moveToPose(-60, 0, 135, 5000);
-    chassis.turnToHeading(90,500);
-    
-
-
-
-    
-   
-
-
-
-
-
-
-
-    
-    
-
-
-
-
-
-
-}
